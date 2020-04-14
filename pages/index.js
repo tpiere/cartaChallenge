@@ -9,6 +9,13 @@ const foursquare = initFoursquare({
 });
 
 
+function Venue({name, formattedAddress}){
+    return (<article>
+        <h1>{name}</h1>
+        <p>{formattedAddress}</p>
+    </article>)
+}
+
 export default function Home() {
     const [searchInput, setSearchInput] = useState('');
     const [nearbyPlaces, setNearbyPlaces] = useState(null);
@@ -31,7 +38,11 @@ export default function Home() {
                     <label htmlFor="locationInput">Enter a location</label>
                     <input type="text" placeholder="Seattle, WA" id="locationInput" value={searchInput} onChange={(event) => { setSearchInput(event.target.value); }} />
                     <button type="submit">Search</button>
-                    {JSON.stringify(nearbyPlaces)}
+                    {nearbyPlaces?.response?.venues?.map((venue)=> {
+                        const name  = venue.name;
+                        const formattedAddress = venue.location.formattedAddress?.join(', ')
+                        return (<Venue name={name} formattedAddress={formattedAddress} />);
+                    })}
                 </form>
             </div>
         </Layout>
