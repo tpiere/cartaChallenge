@@ -1,33 +1,31 @@
 import Layout from '../components/Layout';
 import Head from 'next/head'
 import { useState } from 'react';
-import initFoursquare from 'react-foursquare';
+import { getNearbyPlaces } from '../services/nearbyPlaces';
+import { Venue } from '../components/Venue';
 
-const foursquare = initFoursquare({
-    clientID: 'TAXOBMJS5OPJQ5LFSKZQZH4H5AEBGPWB1HRKA5X52MHEZHO1',
-    clientSecret: 'BHIGYQV3V0314KKAMXRQ2WLHNU222G0JTPP3JPJZFNUVHAJ2'
-});
-
-
-function Venue({name, formattedAddress}){
-    return (<article>
-        <h1>{name}</h1>
-        <p>{formattedAddress}</p>
-    </article>)
-}
 
 export default function Home() {
     const [searchInput, setSearchInput] = useState('');
     const [nearbyPlaces, setNearbyPlaces] = useState(null);
+    const [searchError, setSearchError] = useState(null);
 
     async function submitSearch(e) {
         console.log(`search for: ${searchInput}`);
         e.preventDefault();
-        const venues = await foursquare.venues.getVenues({near:searchInput});
-        setNearbyPlaces(venues)
-            
+        try {
+            const venues = await getNearbyPlaces(searchInput);
+            setNearbyPlaces(venues)
+            setSearchError(null);
+        }
+        catch (ex) {
+            console.error(ex)
+            setSearchError(ex.message);
+        }
+
         return false;
     }
+
     return (
         <Layout>
             <div>
@@ -37,14 +35,21 @@ export default function Home() {
                 <h1>Find nearby places of interest</h1>
                 <form onSubmit={submitSearch}>
                     <label htmlFor="locationInput">Enter a location</label>
-                    <input type="text" placeholder="Seattle, WA" id="locationInput" value={searchInput} onChange={(event) => { setSearchInput(event.target.value); }} />
+                    <input type="text" 
+                    placeholder="Seattle, WA" 
+                    id="locationInput" 
+                    value={searchInput} 
+                    onChange={(event) => { setSearchInput(event.target.value); }} />
                     <button type="submit">Search</button>
-                    {nearbyPlaces?.response?.venues?.map((venue)=> {
-                        const name  = venue.name;
-                        const formattedAddress = venue.location.formattedAddress?.join(', ')
-                        return (<Venue name={name} formattedAddress={formattedAddress} />);
-                    })}
+
                 </form>
+                {nearbyPlaces?.map((venue) => {
+                    const {name, formattedAddressParts, id} = venue;
+                    const formattedAddress = formattedAddressParts?.join(', ')
+                    return (<Venue key={id} name={name} formattedAddress={formattedAddress} />);
+                })}
+                {searchError != null && <span>{searchError}</span>}
+
             </div>
         </Layout>
     );
