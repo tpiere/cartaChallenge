@@ -34,6 +34,7 @@ export default function Home() {
                 <Head>
                     <title>Carta Challenge</title>
                 </Head>
+                <h1>Find nearby places of interest</h1>
                 <form onSubmit={submitSearch}>
                     <label htmlFor="locationInput">Enter a location</label>
                     <input type="text" placeholder="Seattle, WA" id="locationInput" value={searchInput} onChange={(event) => { setSearchInput(event.target.value); }} />
