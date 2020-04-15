@@ -10,14 +10,19 @@ const listStyles = {
     alignContent: 'stretch'
 }
 
-// const listItemStyles = {
-//     width: '32%',
-//     margin: '10px 0'
-// }
+const noResultsStyles = {
+    textAlign: 'center'
+}
+
 
 export function VenueList({ nearbyPlaces }) {
-    if (nearbyPlaces == null || nearbyPlaces.length == 0) {
+    if (nearbyPlaces == null ) {
         return null;
+    }
+    if (nearbyPlaces.length === 0) {
+        return (
+            <p style={noResultsStyles}>No results</p>
+        );
     }
     return (
         <ul style={listStyles}>
