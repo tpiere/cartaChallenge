@@ -2,7 +2,7 @@ import Layout from '../components/Layout';
 import Head from 'next/head'
 import { useState } from 'react';
 import { getNearbyPlaces } from '../services/nearbyPlaces';
-import { Venue } from '../components/Venue';
+import { VenueList } from '../components/VenueList';
 
 
 export default function Home() {
@@ -21,6 +21,7 @@ export default function Home() {
         catch (ex) {
             console.error(ex)
             setSearchError(ex.message);
+            setNearbyPlaces(null)
         }
 
         return false;
@@ -32,7 +33,7 @@ export default function Home() {
                 <Head>
                     <title>Carta Challenge</title>
                 </Head>
-                <h1>Find nearby places of interest</h1>
+                <h1 >Find nearby places of interest</h1>
                 <form onSubmit={submitSearch}>
                     <label htmlFor="locationInput">Enter a location</label>
                     <input type="text" 
@@ -43,13 +44,8 @@ export default function Home() {
                     <button type="submit">Search</button>
 
                 </form>
-                {nearbyPlaces?.map((venue) => {
-                    const {name, formattedAddressParts, id} = venue;
-                    const formattedAddress = formattedAddressParts?.join(', ')
-                    return (<Venue key={id} name={name} formattedAddress={formattedAddress} />);
-                })}
+                <VenueList nearbyPlaces={nearbyPlaces}/>
                 {searchError != null && <span>{searchError}</span>}
-
             </div>
         </Layout>
     );
