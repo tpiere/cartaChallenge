@@ -1,5 +1,4 @@
 import { Venue } from './Venue';
-import { findByLabelText } from '@testing-library/react';
 
 const listStyles = {
     listStyle: 'none',
@@ -11,10 +10,10 @@ const listStyles = {
     alignContent: 'stretch'
 }
 
-const listItemStyles = {
-    width: '32%',
-    margin: '10px 0'
-}
+// const listItemStyles = {
+//     width: '32%',
+//     margin: '10px 0'
+// }
 
 export function VenueList({ nearbyPlaces }) {
     if (nearbyPlaces == null || nearbyPlaces.length == 0) {
@@ -26,8 +25,26 @@ export function VenueList({ nearbyPlaces }) {
                 const { name, formattedAddressParts, id } = venue;
                 const formattedAddress = formattedAddressParts?.join(', ')
                 return (
-                    <li style={listItemStyles} key={id}>
+                    <li key={id}>
                         <Venue  name={name} formattedAddress={formattedAddress} />
+                        <style jsx>{`
+                            li {
+                                width: 100%;
+                                margin: 10px 0;
+                            }
+
+                            @media screen and (min-width: 450px) {
+                                li {
+                                    width: 49%;
+                                }
+                            }
+
+                            @media screen and (min-width: 767px) {
+                                li {
+                                    width: 32%;
+                                }
+                            }
+                        `}</style>
                     </li>);
             })}
         </ul>
