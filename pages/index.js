@@ -60,7 +60,6 @@ export default function Home() {
       setNearbyPlaces(venues);
       setSearchError(null);
     } catch (ex) {
-      console.error(ex);
       setSearchError(ex.message);
       setNearbyPlaces(null);
     }

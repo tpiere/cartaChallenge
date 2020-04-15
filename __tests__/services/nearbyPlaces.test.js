@@ -5,7 +5,6 @@ jest.mock("../../io/foursquare");
 
 describe("nearbyPlaces service", () => {
   beforeEach(() => {
-    jest.restoreAllMocks();
     jest.resetAllMocks();
   });
 
@@ -76,6 +75,15 @@ describe("nearbyPlaces service", () => {
       await getNearbyPlaces("fremont brewery");
     } catch (e) {
       expect(e.message).toMatch("Couldn't geocode param near: fremont brewery");
+    }
+  });
+
+  it("should throw an error when the searchQuery is empty", async () => {
+    expect.assertions(1);
+    try {
+      await getNearbyPlaces("");
+    } catch (e) {
+      expect(e.message).toMatch("Search location cannot be empty");
     }
   });
 });

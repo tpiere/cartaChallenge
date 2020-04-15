@@ -1,4 +1,4 @@
-import * as nearbyPlacesService from "../services/nearbyPlaces";
+import { getNearbyPlaces } from "../services/nearbyPlaces";
 import App from "../pages/index.js";
 
 // import dependencies
@@ -14,7 +14,7 @@ jest.mock("../services/nearbyPlaces");
 
 describe("App", () => {
   beforeEach(() => {
-    //   jest.resetAll();
+    jest.resetAllMocks();
   });
   it("renders a main heading", () => {
     const { container, asFragment } = render(<App />);
@@ -24,15 +24,13 @@ describe("App", () => {
   });
 
   it("displays nearby places", async () => {
-    nearbyPlacesService.getNearbyPlaces = jest
-      .fn()
-      .mockResolvedValue([
-        {
-          id: 1,
-          name: "place 1",
-          formattedAddressParts: ["111 1st street", "Seattle", "WA"],
-        },
-      ]);
+    getNearbyPlaces.mockResolvedValue([
+      {
+        id: 1,
+        name: "place 1",
+        formattedAddressParts: ["111 1st street", "Seattle", "WA"],
+      },
+    ]);
 
     const { findByText, getByLabelText } = render(<App />);
 
@@ -45,5 +43,23 @@ describe("App", () => {
 
     const firstResult = await findByText("place 1");
     expect(firstResult).toBeDefined();
+  });
+
+  it("displays an error message when getNearbyPlaces throws an error ", async () => {
+    getNearbyPlaces.mockImplementation(() => {
+      throw new Error("mocked error");
+    });
+
+    const { findByText, getByLabelText } = render(<App />);
+
+    fireEvent.change(getByLabelText("Enter a location"), {
+      target: { value: "Seattle, WA" },
+    });
+
+    const searchButton = await findByText("Search");
+    fireEvent.click(searchButton);
+
+    const errorText = await findByText("mocked error");
+    expect(errorText).toBeDefined();
   });
 });
