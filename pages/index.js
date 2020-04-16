@@ -3,6 +3,7 @@ import Head from "next/head";
 import { useState } from "react";
 import { getNearbyPlaces } from "../services/nearbyPlaces";
 import { VenueList } from "../components/VenueList";
+import { GeolocateButton } from "../components/GeolocateButton";
 
 const headingStyles = {
   textAlign: "center",
@@ -24,18 +25,23 @@ const horizontalCenterStyles = {
   marginRight: "auto",
 };
 
+const locationInputContainerStyles = {
+  width: "100%",
+  maxWidth: 600,
+  display: "flex",
+  ...horizontalCenterStyles,
+  marginTop: 10,
+};
+
 const textLabelStyles = {
   ...baseFormFieldStyles,
 };
 const textInputStyles = {
-  ...baseFormFieldStyles,
-  ...horizontalCenterStyles,
-  width: "100%",
-  maxWidth: "500px",
   border: "1px solid #ddd",
   padding: 4,
+  flex: "1 1 100%",
 };
-const buttonStyles = {
+const searchButtonStyles = {
   ...baseFormFieldStyles,
   ...horizontalCenterStyles,
   boxSizing: "border-box",
@@ -67,6 +73,11 @@ export default function Home() {
     return false;
   }
 
+  function onCoordinatesRetrieved(coordinates) {
+    const { latitude, longitude } = coordinates;
+    setSearchInput(`${latitude}, ${longitude}`);
+  }
+
   return (
     <Layout>
       <div>
@@ -78,17 +89,21 @@ export default function Home() {
           <label style={textLabelStyles} htmlFor="locationInput">
             Enter a location
           </label>
-          <input
-            type="text"
-            placeholder="Seattle, WA"
-            id="locationInput"
-            value={searchInput}
-            onChange={(event) => {
-              setSearchInput(event.target.value);
-            }}
-            style={textInputStyles}
-          />
-          <button style={buttonStyles} type="submit">
+          <div style={locationInputContainerStyles}>
+            <input
+              type="text"
+              placeholder="Seattle, WA"
+              id="locationInput"
+              value={searchInput}
+              onChange={(event) => {
+                setSearchInput(event.target.value);
+              }}
+              style={textInputStyles}
+            />
+            <GeolocateButton onCoordinatesRetrieved={onCoordinatesRetrieved} />
+          </div>
+
+          <button style={searchButtonStyles} type="submit">
             Search
           </button>
         </form>
