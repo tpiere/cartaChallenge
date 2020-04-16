@@ -8,13 +8,7 @@ You can view the deployed project at https://carta-challenge.now.sh/
 
 ## Installation
 
-First, unzip the attachment or clone the repository from github:
-
-```bash
-git clone https://github.com/tpiere/cartaChallenge.git
-```
-
-In a terminal navigate to the cloned (or unzipped) repository and install the npm packages:
+In a terminal navigate to the unzipped repository and install the npm packages:
 
 ```bash
 npm ci

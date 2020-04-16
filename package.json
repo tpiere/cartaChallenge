@@ -12,13 +12,9 @@
     "test:coverage": "jest --coverage=true"
   },
   "keywords": [],
-  "author": "Tom Piere",
+  "author": "TP",
   "license": "ISC",
-  "homepage": "https://github.com/tpiere/cartaChallenge",
-  "repository": {
-    "type" : "git",
-    "url" : "https://github.com/tpiere/cartaChallenge.git"
-  },
+  "homepage": "https://carta-challenge.now.sh/",
   "dependencies": {
     "next": "^9.3.4",
     "react": "^16.13.1",
