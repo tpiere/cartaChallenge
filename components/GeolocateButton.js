@@ -10,6 +10,8 @@ const iconStyles = { verticalAlign: "text-top" };
 export function GeolocateButton({ onCoordinatesRetrieved }) {
   const [hasGeolocationAvailable, setHasGeolocationAvailable] = useState(false);
 
+  //Next.js will server side render the inital load, so we need to defer
+  //the browser check for gelocation until it is loaded client side
   useEffect(() => {
     setHasGeolocationAvailable(hasGeolocation());
   }, []);

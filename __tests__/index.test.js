@@ -1,15 +1,9 @@
 import { getNearbyPlaces } from "../services/nearbyPlaces";
 import { getCurrentPosition } from "../services/geolocation";
-import { hasGeolocation, getGeolocation } from "../services/globals";
+import { hasGeolocation } from "../services/globals";
 import App from "../pages/index.js";
-
-// import dependencies
 import React from "react";
-
-// import react-testing methods
-import { render, fireEvent, waitFor, screen } from "@testing-library/react";
-
-// add custom jest matchers from jest-dom
+import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 
 jest.mock("../services/nearbyPlaces");

@@ -2,6 +2,10 @@
 
 You can view the deployed project at https://carta-challenge.now.sh/
 
+## Requirements
+
+[Node.js](https://nodejs.org/en/) must be installed 
+
 ## Installation
 
 First, unzip the attachment or clone the repository from github:
