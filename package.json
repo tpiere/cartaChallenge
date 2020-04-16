@@ -12,7 +12,6 @@
     "test:coverage": "jest --coverage=true"
   },
   "keywords": [],
-  "author": "TP",
   "license": "ISC",
   "homepage": "https://carta-challenge.now.sh/",
   "dependencies": {
