@@ -1,6 +1,10 @@
 # Carta Nearby Locations Challenge
 
-You can view the deployed project at https://carta-challenge.now.sh/
+This project was built with Next.js to utilize a simple hosting solution, and leverage the performace optimizations of the framework.  Next.js uses styled-jsx to allow scopped styling which also reduces the need for external stylesheets.  In addition the page is server side rendered and hosted on a CDN which delivers optimal performance. The deployed project can be viewed at https://carta-challenge.now.sh/ 
+
+Since it is a simple project, I used React Hooks for state management.  
+
+For unit testing, I used react-testing-library (https://testing-library.com/docs/react-testing-library/intro) with Jest
 
 ## Requirements
 
