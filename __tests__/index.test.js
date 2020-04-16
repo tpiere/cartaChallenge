@@ -1,4 +1,6 @@
 import { getNearbyPlaces } from "../services/nearbyPlaces";
+import { getCurrentPosition } from "../services/geolocation";
+import { hasGeolocation, getGeolocation } from "../services/globals";
 import App from "../pages/index.js";
 
 // import dependencies
@@ -11,6 +13,8 @@ import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 
 jest.mock("../services/nearbyPlaces");
+jest.mock("../services/geolocation");
+jest.mock("../services/globals");
 
 describe("App", () => {
   beforeEach(() => {
@@ -23,7 +27,7 @@ describe("App", () => {
     );
   });
 
-  it("displays nearby places", async () => {
+  it("displays nearby places from text input", async () => {
     getNearbyPlaces.mockResolvedValue([
       {
         id: 1,
@@ -37,6 +41,35 @@ describe("App", () => {
     fireEvent.change(getByLabelText("Enter a location"), {
       target: { value: "Seattle, WA" },
     });
+
+    const searchButton = await findByText("Search");
+    fireEvent.click(searchButton);
+
+    const firstResult = await findByText("place 1");
+    expect(firstResult).toBeDefined();
+  });
+
+  it("displays nearby places using geolocation", async () => {
+    getNearbyPlaces.mockResolvedValue([
+      {
+        id: 1,
+        name: "place 1",
+        formattedAddressParts: ["111 1st street", "Seattle", "WA"],
+      },
+    ]);
+
+    hasGeolocation.mockReturnValue(true);
+    getCurrentPosition.mockResolvedValue({
+      latitude: 47.6097236,
+      longitude: -122.344387,
+    });
+
+    const { findByText, findByDisplayValue } = render(<App />);
+
+    const useCurrentLocationButton = await findByText("Use current location");
+    fireEvent.click(useCurrentLocationButton);
+
+    await findByDisplayValue("47.6097236, -122.344387");
 
     const searchButton = await findByText("Search");
     fireEvent.click(searchButton);
